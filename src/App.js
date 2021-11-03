@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import CreateRelationship from "./createRelationship";
+import { useState, useEffect, useCallback } from "react";
+const WAIT_TIME = 2000;
 
 function App() {
+  const [nodeList, setNodeList] = useState(["None"]);
+
+  // useEffect for refreshing node list
+  useEffect(() => {
+    fetch("/nodelist")
+      .then((res) => res.json())
+      .then((data) => {
+        setNodeList(data.nodes);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header"></header>
+      <CreateRelationship nodes={nodeList} />
     </div>
   );
 }
