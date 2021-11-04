@@ -133,7 +133,7 @@ const CreateRelationship = (props) => {
             return (
               <MenuItem
                 value={node}
-                id={node.id}
+                key={node.name}
                 disabled={node === selectedNode1}
               >
                 {node.name}

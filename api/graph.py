@@ -23,22 +23,18 @@ def list_nodes():
 
 def list_relationships():
     with graphDB_Driver.session() as graphDB_Session:
-        cqlNodeQuery = "MATCH (x:Node)-[r:follows]-(y:Node) RETURN x.name,y.name"
+        cqlNodeQuery = "MATCH (x:Node)-[r:follows]->(y:Node) RETURN x.name,y.name"
         all_rel = graphDB_Session.run(cqlNodeQuery)
         all_list = []
 
         for record in all_rel:
-            small_list = [
-                record[0],
-                record[1],
-                record[2],
-                record[3],
-                record[4],
-                record[5],
-            ]
+            #print(record)
+            small_list = [record[0],record[1]]
+            #print(small_list)
+            
             all_list.append(small_list)
-        sall_list = sorted(all_list)
-        return sall_list
+        #print(all_list)
+        return all_list
 
 def add_connection(node1, node2):
     isExists = False 
@@ -54,7 +50,7 @@ def add_connection(node1, node2):
         )
         test = graphDB_Session.run(cqlTestQuery)
         ans = [record[0] for record in test][0]
-        print("\n\n",ans,"\n\n")
+        
         if ans:
             isExists = True
         else:
@@ -74,13 +70,49 @@ def add_connection(node1, node2):
             graphDB_Session.run(updateFollowers)
     
     return isExists
-def add_connection1(node1,node2):
+def del_connection(node1,node2):
+    isExists = True
     with graphDB_Driver.session() as graphDB_Session:
-        cqlNodeQuery = '''MATCH (x:Node) where x.name="'''+str(node1['name'])+'''" RETURN x'''
-
-        nodes = graphDB_Session.run(cqlNodeQuery)
-        results = [record for record in nodes.data()]
-        nodeList = [list(node.values())[0] for node in results]
-        print(nodeList)
+        cqlTestQuery = (
+            '''match (m:Node{name:"'''
+            + node1['name']
+            + '''"}),(n:Node{name:"'''
+            + node2['name']
+            + """"})
+        return exists((m)-[:follows]-(n))"""
+        )
+        test = graphDB_Session.run(cqlTestQuery)
+        ans = [record[0] for record in test][0]
         
-        return {'nodes':nodeList}
+        if ans:
+            cqlNodeQuery = ('''MATCH (n:Node {name:"'''+node1['name']+'''"})-[r:follows]-(m:Node {name:"'''+node2['name']+'''"}) DELETE r ''')
+            graphDB_Session.run(cqlNodeQuery)
+        else:
+            isExists = False
+    return isExists
+
+def add_node(node):
+    
+    with graphDB_Driver.session() as graphDB_Session:
+        
+        cqlNodeQuery = (
+            'create (n:Node{name:"' + node['name'] + '",age:' + str(node['age']) + ',followers:'+str(node['followers'])+'})'
+        )
+        graphDB_Session.run(cqlNodeQuery)
+    return
+
+def del_node(node):
+    with graphDB_Driver.session() as graphDB_Session:
+        cqlNodeQuery = (
+            '''match (n:Node)-[r:follows]-(m:Node) where n.name="'''+node['name']+'''" set m.followers=m.followers-1'''
+        )
+        
+        cqldelQuery = (
+            '''Match (n:Node) where n.name = "'''
+            + node['name']
+            + """" detach delete n"""
+        )
+        graphDB_Session.run(cqlNodeQuery)
+        graphDB_Session.run(cqldelQuery)
+    return
+list_relationships()
