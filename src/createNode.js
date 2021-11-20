@@ -1,5 +1,4 @@
 import { useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -25,7 +24,7 @@ const CreateNode = (props) => {
     "followers": 0,
   });
   const [checkName, setcheckName] = useState(false);
-  const [checkAge, setcheckAge] = useState(false);
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -36,7 +35,7 @@ const CreateNode = (props) => {
     event.preventDefault();
     var i;
     for (i = 0; i < props.nodes.length; i++) {
-      if (props.nodes[i] == inputs) {
+      if (props.nodes[i].name === inputs.name) {
         setcheckName(true);
         return;
       }
@@ -60,6 +59,8 @@ const CreateNode = (props) => {
         setMessage(json.message);
         props.onChange(inputs);
         togglePopup();
+        setcheckName(false);
+        document.getElementById("add-node-form").reset();
       })
       .catch((error) => {
         console.log(error);
@@ -68,7 +69,7 @@ const CreateNode = (props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off" id="add-node-form">
         <FormControl sx={{ m: 1, width: "15ch" }}>
           <TextField
             required
@@ -90,7 +91,6 @@ const CreateNode = (props) => {
             value={inputs.age || ""}
             onChange={handleChange}
             variant="standard"
-            error={checkAge}
           />
         </FormControl>
         <br />

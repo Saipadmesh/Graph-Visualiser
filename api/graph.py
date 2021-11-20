@@ -110,7 +110,7 @@ def del_node(node):
         cqldelQuery = (
             '''Match (n:Node) where n.name = "'''
             + node['name']
-            + """" detach delete n"""
+            + '''" detach delete n'''
         )
         graphDB_Session.run(cqlNodeQuery)
         graphDB_Session.run(cqldelQuery)
