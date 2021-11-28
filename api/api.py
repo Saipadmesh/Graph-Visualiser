@@ -46,8 +46,12 @@ def del_result():
 def addnode():
     data=request.json
     if data:
-        add_node(data['node'])
-        return {"message":"Node successfully added"}
+        check=add_node(data['node'])
+        if(not check):
+            message = "Node successfully added"
+        else:
+            message = "Node exists already"
+        return {"check_var":check,"message":message}
 
 @app.route('/delnode',methods=['POST'],strict_slashes=False)
 def delnode():

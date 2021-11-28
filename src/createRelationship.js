@@ -53,7 +53,12 @@ const CreateRelationship = (props) => {
         })
         .then((json) => {
           setMessage(json.message);
-          togglePopup();
+          if (!json.check_var) {
+            props.onChange([selectedNode1.name, selectedNode2.name]);
+          } else {
+            togglePopup();
+          }
+          //console.log(props.relationships);
         })
         .catch((error) => {
           console.log(error);
@@ -81,7 +86,13 @@ const CreateRelationship = (props) => {
         })
         .then((json) => {
           setMessage(json.message);
-          togglePopup();
+          //console.log(json.check_var);
+          if (json.check_var) {
+            props.onDelete([selectedNode1.name, selectedNode2.name]);
+          } else {
+            togglePopup();
+          }
+          //console.log(props.relationships);
         })
         .catch((error) => {
           console.log(error);

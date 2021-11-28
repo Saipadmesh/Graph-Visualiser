@@ -92,14 +92,19 @@ def del_connection(node1,node2):
     return isExists
 
 def add_node(node):
-    
+    isExists = False
     with graphDB_Driver.session() as graphDB_Session:
-        
+        cqlSearchQuery = ('match (m:Node{name:"'+node['name']+'"}) return m')
+        test = graphDB_Session.run(cqlSearchQuery)
+        ans = [record for record in test]
+        print(ans)
+        if(ans != []):
+            return True
         cqlNodeQuery = (
             'create (n:Node{name:"' + node['name'] + '",age:' + str(node['age']) + ',followers:'+str(node['followers'])+'})'
         )
         graphDB_Session.run(cqlNodeQuery)
-    return
+    return isExists
 
 def del_node(node):
     with graphDB_Driver.session() as graphDB_Session:

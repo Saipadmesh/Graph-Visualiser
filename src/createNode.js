@@ -57,9 +57,14 @@ const CreateNode = (props) => {
       })
       .then((json) => {
         setMessage(json.message);
-        props.onChange(inputs);
-        togglePopup();
+        console.log(json.check_var);
+        if (!json.check_var) {
+          props.onChange(inputs);
+        } else {
+          togglePopup();
+        }
         setcheckName(false);
+        //console.log(props.nodes);
         document.getElementById("add-node-form").reset();
       })
       .catch((error) => {
