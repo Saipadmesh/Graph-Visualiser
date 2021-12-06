@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -29,6 +29,12 @@ const CreateNode = (props) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
+  };
+  let text1 = useRef(null);
+  let text2 = useRef(null);
+  const handleReset = () => {
+    text1.current.value = "";
+    text2.current.value = "";
   };
 
   const handleSubmit = (event) => {
@@ -64,8 +70,7 @@ const CreateNode = (props) => {
           togglePopup();
         }
         setcheckName(false);
-        //console.log(props.nodes);
-        document.getElementById("add-node-form").reset();
+        handleReset();
       })
       .catch((error) => {
         console.log(error);
@@ -73,13 +78,15 @@ const CreateNode = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ margin: 10 }}>
+      <h2>Add Node</h2>
       <form onSubmit={handleSubmit} autoComplete="off" id="add-node-form">
         <FormControl sx={{ m: 1, width: "15ch" }}>
           <TextField
             required
             label="Name"
             name="name"
+            inputRef={text1}
             value={inputs.name || ""}
             onChange={handleChange}
             variant="standard"
@@ -93,6 +100,7 @@ const CreateNode = (props) => {
             required
             label="Age"
             name="age"
+            inputRef={text2}
             value={inputs.age || ""}
             onChange={handleChange}
             variant="standard"
@@ -115,6 +123,7 @@ const CreateNode = (props) => {
           handleClose={togglePopup}
         />
       )}
+      <hr />
     </div>
   );
 };

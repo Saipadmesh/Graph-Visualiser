@@ -34,7 +34,7 @@ function App() {
 
   function handleChangeNodes(newValue) {
     setNodeList(nodeList.concat(newValue));
-    console.log(nodeList);
+    //console.log(nodeList);
   }
 
   function handleChangeRelationships(newValue) {
@@ -53,20 +53,21 @@ function App() {
         }
       })
     );
-    console.log(relList);
+    //console.log(relList);
   }
 
   function handleDelRelationships(newValue) {
     //console.log(newValue);
-    setRelList(
-      relList.filter((arr) => {
-        return arr.indexOf(newValue[0]) < 0 && arr.indexOf(newValue[1]) < 0;
-      })
-    );
+    let filtered = [];
+    filtered = relList.filter((arr) => {
+      return arr.indexOf(newValue[0]) < 0 || arr.indexOf(newValue[1]) < 0;
+    });
+    //console.log(filtered);
+    setRelList(filtered);
     setNodeList(
       nodeList.map((node) => {
         if (node.name === newValue[0] || node.name === newValue[1]) {
-          console.log(node.name);
+          //console.log(node.name);
           return {
             "id": node.id,
             "name": node.name,
@@ -78,20 +79,26 @@ function App() {
         }
       })
     );
-    console.log(relList);
   }
-  //<DrawGraph nodelist={nodeList} rellist={relList} />
+
   return (
     <div className="App">
       <header className="App-header"></header>
-      <div style={{ height: 500, width: 500, margin: 10 }}>
+      <h1 style={{ margin: 10 }}>Graph Visualizer</h1>
+      <div
+        style={{
+          height: 400,
+          width: 600,
+          margin: 10,
+          border: "3px solid rgba(0, 0, 0, 1)",
+        }}
+      >
         <DrawGraph nodelist={nodeList} rellist={relList} />
       </div>
-      <br />
-      <br />
+      <hr />
+
       <CreateNode nodes={nodeList} onChange={handleChangeNodes} />
-      <br />
-      <br />
+
       <CreateRelationship
         nodes={nodeList}
         relationships={relList}

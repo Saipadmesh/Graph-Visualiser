@@ -38,7 +38,7 @@ def del_result():
             message = "Connection successfully deleted"
         else:
             message = "Connection does not exist"
-       #name1 = str(data['name1'][0])
+       
         return {"check_var":check,"message":message}
     return jsonify("No information is given")
 

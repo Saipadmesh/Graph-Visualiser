@@ -101,7 +101,8 @@ const CreateRelationship = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ margin: 10 }}>
+      <h2>Modify relationships</h2>
       <FormControl sx={{ m: 1, minWidth: 100 }}>
         <InputLabel id="combo1">Name</InputLabel>
         <Select
@@ -180,6 +181,7 @@ const CreateRelationship = (props) => {
           handleClose={togglePopup}
         />
       )}
+      <hr />
     </div>
   );
 };

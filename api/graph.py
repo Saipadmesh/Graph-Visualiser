@@ -86,7 +86,9 @@ def del_connection(node1,node2):
         
         if ans:
             cqlNodeQuery = ('''MATCH (n:Node {name:"'''+node1['name']+'''"})-[r:follows]-(m:Node {name:"'''+node2['name']+'''"}) DELETE r ''')
+            cqldelQuery = ('''MATCH (n:Node) where n.name in ["'''+node1['name']+'''","'''+node2['name']+'''"] SET n.followers=n.followers-1''')
             graphDB_Session.run(cqlNodeQuery)
+            graphDB_Session.run(cqldelQuery)
         else:
             isExists = False
     return isExists
