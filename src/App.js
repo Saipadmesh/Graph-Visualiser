@@ -2,6 +2,7 @@ import CreateNode from "./createNode";
 import CreateRelationship from "./createRelationship";
 import DrawGraph from "./graph";
 import { useState, useEffect } from "react";
+import styles from "./node.module.css";
 const WAIT_TIME = 2000;
 
 function App() {
@@ -82,30 +83,40 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header"></header>
-      <h1 style={{ margin: 10 }}>Graph Visualizer</h1>
-      <div
-        style={{
-          height: 400,
-          width: 600,
-          margin: 10,
-          border: "3px solid rgba(0, 0, 0, 1)",
-        }}
-      >
-        <DrawGraph nodelist={nodeList} rellist={relList} />
+    <body className={styles.doc}>
+      <div className={styles.App}>
+        <header className="App-header"></header>
+        <h1
+          style={{
+            margin: 10,
+            fontFamily: "'Fjalla One', sans-serif",
+            fontSize: 60,
+          }}
+        >
+          Graph Visualizer
+        </h1>
+        <br />
+        <div className={styles.grid_container}>
+          <div className={styles.graph_grid}>
+            <div className={styles.graph_grid_item}>
+              <DrawGraph nodelist={nodeList} rellist={relList} />
+            </div>
+          </div>
+
+          <div className={styles.item1}>
+            <CreateNode nodes={nodeList} onChange={handleChangeNodes} />
+          </div>
+          <div className={styles.item2}>
+            <CreateRelationship
+              nodes={nodeList}
+              relationships={relList}
+              onChange={handleChangeRelationships}
+              onDelete={handleDelRelationships}
+            />
+          </div>
+        </div>
       </div>
-      <hr />
-
-      <CreateNode nodes={nodeList} onChange={handleChangeNodes} />
-
-      <CreateRelationship
-        nodes={nodeList}
-        relationships={relList}
-        onChange={handleChangeRelationships}
-        onDelete={handleDelRelationships}
-      />
-    </div>
+    </body>
   );
 }
 

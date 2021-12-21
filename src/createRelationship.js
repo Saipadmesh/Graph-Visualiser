@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select from "@mui/material/Select";
-import Button from "@mui/material/Button";
+import { OrangeButton, BlackButton, useSelectStyle } from "./muiCustomStyle";
 import Stack from "@mui/material/Stack";
 import Popup from "./Popup";
 
@@ -92,13 +92,15 @@ const CreateRelationship = (props) => {
           } else {
             togglePopup();
           }
-          //console.log(props.relationships);
         })
         .catch((error) => {
           console.log(error);
         });
     }
   };
+
+  // selectField colors
+  const classes = useSelectStyle();
 
   return (
     <div style={{ margin: 10 }}>
@@ -112,6 +114,10 @@ const CreateRelationship = (props) => {
           onChange={handleChange1}
           autoWidth
           label="Name"
+          classes={{
+            root: classes.select,
+          }}
+          MenuProps={{ classes: { paper: classes.list } }}
         >
           <MenuItem value={{}}>
             <em>None</em>
@@ -136,6 +142,10 @@ const CreateRelationship = (props) => {
           onChange={handleChange2}
           autoWidth
           label="Name"
+          classes={{
+            root: classes.select,
+          }}
+          MenuProps={{ classes: { paper: classes.list } }}
         >
           <MenuItem value={{}}>
             <em>None</em>
@@ -162,13 +172,17 @@ const CreateRelationship = (props) => {
 
       <FormControl sx={{ m: 1 }}>
         <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={addConnection}>
+          <OrangeButton variant="contained" onClick={addConnection}>
             Add
-          </Button>
+          </OrangeButton>
 
-          <Button variant="contained" color="error" onClick={delConnection}>
+          <BlackButton
+            variant="contained"
+            color="error"
+            onClick={delConnection}
+          >
             Delete
-          </Button>
+          </BlackButton>
         </Stack>
       </FormControl>
       {isOpen && (
@@ -181,7 +195,6 @@ const CreateRelationship = (props) => {
           handleClose={togglePopup}
         />
       )}
-      <hr />
     </div>
   );
 };

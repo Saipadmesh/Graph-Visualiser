@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
-
+import { OrangeButton } from "./muiCustomStyle";
 import Popup from "./Popup";
 
 const CreateNode = (props) => {
@@ -108,9 +108,9 @@ const CreateNode = (props) => {
         </FormControl>
         <br />
         <FormControl sx={{ m: 1 }}>
-          <Button variant="contained" type="submit">
+          <OrangeButton variant="contained" type="submit">
             Add
-          </Button>
+          </OrangeButton>
         </FormControl>
       </form>
       {isOpen && (
@@ -123,7 +123,6 @@ const CreateNode = (props) => {
           handleClose={togglePopup}
         />
       )}
-      <hr />
     </div>
   );
 };
